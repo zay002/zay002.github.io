@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scout 2.0 + AUBO i5</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--demo-bg, #05070c);
+            font-family: sans-serif;
+        }
+        #demo-container {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--demo-bg, #05070c);
+        }
+        canvas {
+            display: block;
+            background-color: var(--demo-bg, #05070c);
+        }
+        :root[data-theme="light"] {
+            --demo-bg: #ffffff;
+        }
+        :root[data-theme="dark"] {
+            --demo-bg: #05070c;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: #d8e2ee;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">Loading Models...</div>
+    <div id="demo-container"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="/model-brotli-register.js"></script>
+    <script type="module">
+        await (window.modelBrotliReady || Promise.resolve());
+        import("./app.js");
+    </script>
+</body>
+</html>

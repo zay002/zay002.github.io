@@ -1,0 +1,96 @@
+# =========================
+# OS / editor junk
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Windows alternate data stream files
+*:Zone.Identifier
+*.Identifier
+*.Identifier:*
+*Zone.Identifier
+
+# VSCode / local IDE settings
+.vscode/
+.idea/
+.agents/
+skills-lock.json
+
+# =========================
+# Python / local server cache
+# =========================
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# =========================
+# Node / frontend cache
+# =========================
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+
+# =========================
+# Documents / references not for homepage
+# =========================
+*.pdf
+/ref/
+scripts/
+
+# =========================
+# Generated resume artifacts
+# Keep resume_en.html because index.html links to it.
+# =========================
+resume.css
+resume_zh.html
+resume_zh.md
+resume_en.md
+tmp/
+output/
+
+# Keep compressed poster images in Git, source PNGs local.
+assets/poster/*.PNG
+
+# =========================
+# Local / experimental projects
+# =========================
+/Autron/
+/robotics-pick-and-place/
+/extra/
+
+# =========================
+# Large or temporary files
+# =========================
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.log
+
+# =========================
+# Raw robotics model assets
+# GitHub Pages serves the Brotli copies; keep originals local.
+# =========================
+assets/**/*.dae
+assets/**/*.DAE
+assets/**/*.obj
+assets/**/*.stl
+assets/**/*.xml
+!assets/**/*.br
+
+# =========================
+# Keep homepage source files
+# Do NOT ignore:
+# index.html
+# styles.css
+# robot-demo.js
+# SWJTU.png
+# Centrale.png
+# scout-aubo/
+# compressed robotics model copies under assets/
+# =========================

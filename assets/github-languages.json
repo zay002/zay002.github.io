@@ -1,0 +1,57 @@
+{
+  "owner": "zay002",
+  "updatedAt": "2026-06-30T19:03:11.713Z",
+  "source": "GitHub Linguist language statistics",
+  "repoCount": 9,
+  "totalBytes": 12390660,
+  "languages": [
+    {
+      "name": "JavaScript",
+      "bytes": 7674149,
+      "share": 61.9,
+      "color": "#f7df1e"
+    },
+    {
+      "name": "Python",
+      "bytes": 3904970,
+      "share": 31.5,
+      "color": "#63d7ff"
+    },
+    {
+      "name": "TypeScript",
+      "bytes": 303893,
+      "share": 2.5,
+      "color": "#3178c6"
+    },
+    {
+      "name": "Shell",
+      "bytes": 168163,
+      "share": 1.4,
+      "color": "#89e051"
+    },
+    {
+      "name": "CSS",
+      "bytes": 135074,
+      "share": 1.1,
+      "color": "#8aa4ff"
+    },
+    {
+      "name": "GDScript",
+      "bytes": 73354,
+      "share": 0.6,
+      "color": "#355570"
+    },
+    {
+      "name": "HTML",
+      "bytes": 46156,
+      "share": 0.4,
+      "color": "#e34c26"
+    },
+    {
+      "name": "CUDA",
+      "bytes": 40692,
+      "share": 0.3,
+      "color": "#7bf1c7"
+    }
+  ]
+}
