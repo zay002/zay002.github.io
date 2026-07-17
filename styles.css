@@ -660,7 +660,6 @@ h3 {
 .profile-card,
 .highlight,
 .timeline-item,
-.credential,
 .coding-panel,
 .robotics-boundary,
 .robotics-lab,
@@ -929,34 +928,6 @@ h3 {
   border-color: rgba(17, 155, 142, 0.28);
   box-shadow: var(--shadow);
   transform: translateY(-2px);
-}
-
-.credential-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.credential {
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 18px;
-}
-
-.credential span {
-  font-family: var(--display);
-  font-size: 1.45rem;
-  font-weight: 750;
-  line-height: 1.05;
-}
-
-.credential small {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 700;
 }
 
 .coding-panel {
@@ -1598,7 +1569,6 @@ h3 {
   .profile-card,
   .highlight,
   .timeline-item,
-  .credential,
   .coding-panel,
   .robotics-boundary,
   .robotics-lab,
@@ -1703,9 +1673,6 @@ h3 {
     position: static;
   }
 
-  .credential-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 860px) {
@@ -1934,13 +1901,8 @@ h3 {
     flex-direction: column;
   }
 
-  .credential-grid,
   .ai-stack {
     grid-template-columns: 1fr;
-  }
-
-  .credential {
-    min-height: 96px;
   }
 
   .ai-stack span {
@@ -2286,7 +2248,6 @@ h3 {
 .profile-card,
 .highlight,
 .timeline-item,
-.credential,
 .coding-panel,
 .robotics-boundary,
 .robotics-lab,
@@ -2426,7 +2387,6 @@ h3 {
   box-shadow: none;
 }
 
-.credential,
 .coding-panel,
 .focus-list article,
 .interest-list article,
@@ -3695,7 +3655,6 @@ h2,
 .coding-workflow > span,
 .language-profile__header span,
 .timeline-item time,
-.credential small,
 .project-kicker,
 .project-stat-grid span,
 .project-feature-grid span,
@@ -3717,7 +3676,6 @@ h2,
 .timeline-item h3,
 .focus-list h3,
 .interest-list h3,
-.credential span,
 .coding-workflow strong,
 .language-profile__header strong,
 .contact-list a,
@@ -3732,7 +3690,6 @@ h2,
 .profile-card,
 .highlight,
 .timeline-item,
-.credential,
 .coding-panel,
 .robotics-boundary,
 .robotics-lab,
@@ -3880,7 +3837,6 @@ h3,
 .timeline-item h3,
 .focus-list h3,
 .interest-list h3,
-.credential span,
 .coding-workflow strong,
 .language-profile__header strong,
 .contact-list a,
@@ -3914,8 +3870,7 @@ h3,
 .coding-panel__header span,
 .coding-workflow > span,
 .language-profile__header span,
-.timeline-item time,
-.credential small {
+.timeline-item time {
   font-weight: 550;
 }
 
@@ -4195,8 +4150,7 @@ h3 {
 .coding-panel__header span,
 .coding-workflow > span,
 .language-profile__header span,
-.timeline-item time,
-.credential small {
+.timeline-item time {
   color: var(--accent);
   font-family: var(--mono);
   font-size: 0.68rem;
@@ -4355,7 +4309,6 @@ h3 {
 .profile-card,
 .highlight,
 .timeline-item,
-.credential,
 .coding-panel,
 .robotics-boundary,
 .robotics-console,
@@ -4858,28 +4811,6 @@ h3 {
   display: none;
 }
 
-.credential-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-}
-
-.credential {
-  display: grid;
-  gap: 6px;
-  padding: 18px 18px 18px 0;
-  border-right: 1px solid var(--soft-line);
-}
-
-.credential:last-child {
-  border-right: 0;
-}
-
-.credential span {
-  color: var(--ink);
-  font-size: 1.02rem;
-}
-
 .coding-panel {
   padding: 0;
 }
@@ -5135,20 +5066,17 @@ h3 {
     padding: 62px 0;
   }
 
-  .robotics-boundary,
-  .credential-grid {
+  .robotics-boundary {
     grid-template-columns: 1fr;
   }
 
-  .robotics-boundary div + div,
-  .credential {
+  .robotics-boundary div + div {
     border-left: 0;
     border-right: 0;
     border-top: 1px solid var(--soft-line);
   }
 
-  .robotics-boundary div:first-child,
-  .credential:first-child {
+  .robotics-boundary div:first-child {
     border-top: 0;
   }
 
@@ -5203,7 +5131,6 @@ input,
 .coding-workflow > span,
 .language-profile__header span,
 .timeline-item time,
-.credential small,
 .language-bar,
 .robotics-steps li {
   font-family: var(--display);
@@ -5234,7 +5161,6 @@ body {
 .coding-workflow > span,
 .language-profile__header span,
 .timeline-item time,
-.credential small,
 .language-bar,
 .robotics-steps li {
   font-weight: 500;
@@ -5250,8 +5176,7 @@ body {
 .coding-panel__header span,
 .coding-workflow > span,
 .language-profile__header span,
-.timeline-item time,
-.credential small {
+.timeline-item time {
   letter-spacing: 0.02em;
 }
 
@@ -5266,8 +5191,7 @@ body .robotics-demo-card__meta small,
 body .coding-panel__header span,
 body .coding-workflow > span,
 body .language-profile__header span,
-body .timeline-item time,
-body .credential small {
+body .timeline-item time {
   font-family: var(--display);
   font-weight: 500;
 }
@@ -5308,7 +5232,6 @@ body .section h2,
 body #publication-title,
 body #robotics-demo-title,
 body #education-title,
-body #languages-title,
 body #coding-title,
 body #career-title,
 body #contact-title {
@@ -5335,19 +5258,6 @@ body .contact-list a {
   line-height: 1.2;
 }
 
-body .credential {
-  border-right: 0;
-}
-
-body .credential span {
-  font-size: clamp(1.12rem, 1.6vw, 1.32rem);
-}
-
-body .credential small {
-  font-size: 0.96rem;
-  text-transform: none;
-}
-
 body .robotics-boundary {
   border: 0;
 }
@@ -5367,7 +5277,6 @@ body .robotics-boundary div + div,
   body #publication-title,
   body #robotics-demo-title,
   body #education-title,
-  body #languages-title,
   body #coding-title,
   body #career-title,
   body #contact-title {
@@ -5555,7 +5464,6 @@ body .coding-panel__header span,
 body .coding-workflow > span,
 body .language-profile__header span,
 body .timeline-item time,
-body .credential small,
 body .language-bar {
   font-family: "Spectral", Georgia, "Times New Roman", serif;
   font-weight: 600;
@@ -5576,8 +5484,7 @@ body .robotics-demo-card__meta small,
 body .coding-panel__header span,
 body .coding-workflow > span,
 body .language-profile__header span,
-body .timeline-item time,
-body .credential small {
+body .timeline-item time {
   font-size: 0.92rem;
   letter-spacing: 0.01em;
 }
@@ -5662,7 +5569,6 @@ body {
 .coding-workflow > span,
 .language-profile__header span,
 .timeline-item time,
-.credential small,
 .language-bar {
   font-family: "Spectral", Georgia, "Times New Roman", serif;
   font-weight: 600;
@@ -5683,8 +5589,7 @@ body {
 .coding-panel__header span,
 .coding-workflow > span,
 .language-profile__header span,
-.timeline-item time,
-.credential small {
+.timeline-item time {
   font-size: 0.92rem;
   letter-spacing: 0.01em;
 }
@@ -5869,7 +5774,6 @@ h3,
 .robotics-demo-card__header h3,
 .timeline-item h3,
 .interest-list h3,
-.credential span,
 .coding-workflow strong,
 .language-profile__header strong,
 .robotics-boundary strong,
@@ -5911,8 +5815,7 @@ h3,
 .coding-panel__header span,
 .coding-workflow > span,
 .language-profile__header span,
-.timeline-item time,
-.credential small {
+.timeline-item time {
   font-weight: 500;
 }
 
@@ -6259,7 +6162,6 @@ h3,
 .timeline-item h3,
 .focus-list h3,
 .interest-list h3,
-.credential span,
 .coding-workflow strong,
 .language-profile__header strong,
 .contact-list a {
@@ -6703,8 +6605,7 @@ h3,
 .coding-panel__header span,
 .coding-workflow > span,
 .language-profile__header span,
-.timeline-item time,
-.credential small {
+.timeline-item time {
   font-size: 0.76rem;
 }
 
@@ -6731,7 +6632,6 @@ h3,
 .cv-button,
 .cv-incoming,
 .legacy-stack span,
-.credential span,
 .language-bar,
 .language-profile__header strong {
   font-size: 0.96rem;
