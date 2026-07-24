@@ -1,14 +1,14 @@
 {
   "owner": "zay002",
-  "updatedAt": "2026-07-16T18:45:43.318Z",
+  "updatedAt": "2026-07-24T18:53:10.784Z",
   "source": "GitHub Linguist language statistics",
   "repoCount": 9,
-  "totalBytes": 12610611,
+  "totalBytes": 12608739,
   "languages": [
     {
       "name": "JavaScript",
-      "bytes": 7836545,
-      "share": 62.1,
+      "bytes": 7837358,
+      "share": 62.2,
       "color": "#f7df1e"
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "name": "CSS",
-      "bytes": 135168,
+      "bytes": 133497,
       "share": 1.1,
       "color": "#8aa4ff"
     },
@@ -43,7 +43,7 @@
     },
     {
       "name": "HTML",
-      "bytes": 48936,
+      "bytes": 47942,
       "share": 0.4,
       "color": "#e34c26"
     },
