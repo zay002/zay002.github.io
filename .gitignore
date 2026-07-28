@@ -45,6 +45,7 @@ scripts/
 # Generated resume artifacts
 # Keep resume_en.html because index.html links to it.
 # =========================
+latex_mamunia/
 resume.css
 resume_zh.html
 resume_zh.md
