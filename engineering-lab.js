@@ -8,10 +8,10 @@
   const tabs = [...root.querySelectorAll('[role="tab"]')];
   const demos = [
     { title: 'Point Cloud Registration', tag: '01 / Geometry', text: 'Watch two offset scans converge into a shared coordinate frame. Correspondences reveal the geometry behind point cloud registration.', stages: ['Source & reference', 'Find correspondences', 'Refine alignment'], legends: ['Reference cloud', 'Source cloud'], link: 'Explore my engineering background', href: 'resume_en.pdf' },
-    { title: 'Point Cloud Completion', tag: '02 / 3D perception', text: 'A partial observation grows into a complete shape. Inspired by my point cloud completion research, SplAttN; this procedural example illustrates the task, not model inference.', stages: ['Partial observation', 'Recover structure', 'Complete geometry'], legends: ['Observed points', 'Completed points'], link: 'SplAttN · paper & code', href: '#publication' },
+    { title: 'Point Cloud Completion', tag: '02 / 3D perception', text: 'A demonstration of recovering a complete 3D shape from a partial point cloud, inspired by my SplAttN research.', stages: ['Partial observation', 'Recover structure', 'Complete geometry'], legends: ['Observed points', 'Completed points'], link: 'SplAttN · paper & code', href: '#publication' },
     { title: 'LiDAR Mapping & SLAM', tag: '03 / Localization', text: 'A moving sensor accumulates LiDAR returns, estimates a trajectory, and revisits its starting point. Loop closure illustrates how a map can correct accumulated drift.', stages: ['Scan & localize', 'Accumulate the map', 'Close the loop'], legends: ['LiDAR map / corrected path', 'Odometry with drift'], link: 'See the mobile robot', href: '#robotics-demo' },
-    { title: 'Object Detection', tag: '04 / Visual perception', text: 'A real traffic photograph illustrates the object detection workflow: acquire an image, localize vehicles, and assign classes. Boxes are hand-authored for this visualization, not YOLO predictions.', stages: ['Acquire image', 'Localize vehicles', 'Review detections'], legends: ['Car / van', 'Truck'], link: 'Explore my engineering background', href: 'resume_en.pdf' },
-    { title: 'Glass Defect Inspection', tag: '05 / Industrial vision', text: 'A window photograph illustrates visual inspection, with a close-up of an impact hole and surrounding cracks. Annotations are illustrative; this is a reference image, not a production result.', stages: ['Acquire & isolate ROI', 'Localize the defect', 'Review the damage'], legends: ['Inspection region', 'Impact damage'], link: 'Project details in my CV', href: 'resume_en.pdf' }
+    { title: 'Object Detection', tag: '04 / Visual perception', text: 'An object detection example with manually annotated vehicles in a traffic photograph.', stages: ['Acquire image', 'Localize vehicles', 'Review detections'], legends: ['Car / van', 'Truck'], link: 'Explore my engineering background', href: 'resume_en.pdf' },
+    { title: 'Glass Defect Inspection', tag: '05 / Industrial vision', text: 'A visual inspection example showing a damaged pane and a close-up of the impact area.', stages: ['Acquire & isolate ROI', 'Localize the defect', 'Review the damage'], legends: ['Inspection region', 'Impact damage'], link: 'Project details in my CV', href: 'resume_en.pdf' }
   ];
   const clamp = x => Math.max(0, Math.min(1, x));
   const smooth = x => { x = clamp(x); return x * x * (3 - 2 * x); };
@@ -178,13 +178,13 @@
   function select(index) {
     selected=index;progress=0;const d=demos[index];
     $('.engineering-stage').classList.toggle('is-photo', index >= 3);
-    $('[data-lab-medium]').textContent = index >= 3 ? 'PHOTO / ILLUSTRATIVE OVERLAY' : 'PROCEDURAL STUDY';
+    $('[data-lab-medium]').textContent = index >= 3 ? 'ANNOTATED EXAMPLE' : 'CONCEPT DEMO';
     const credit = $('[data-photo-credit]'); credit.hidden = index < 3;
     if (index >= 3) {
       loadPhoto(index);
       credit.innerHTML = index === 3
-        ? 'Photo: <a href="https://commons.wikimedia.org/wiki/File:Cars_in_traffic_in_Auckland,_New_Zealand_-_copyright-free_photo_released_to_public_domain.jpg" target="_blank" rel="noopener noreferrer">Kiwiev</a> · CC0. Illustrative annotations.'
-        : 'Photo: <a href="https://commons.wikimedia.org/wiki/File:Broken_glass_in_window.JPG" target="_blank" rel="noopener noreferrer">Dmitry G</a> · Public domain. Cropped views with illustrative annotations.';
+        ? 'Photo: <a href="https://commons.wikimedia.org/wiki/File:Cars_in_traffic_in_Auckland,_New_Zealand_-_copyright-free_photo_released_to_public_domain.jpg" target="_blank" rel="noopener noreferrer">Kiwiev</a> · CC0.'
+        : 'Photo: <a href="https://commons.wikimedia.org/wiki/File:Broken_glass_in_window.JPG" target="_blank" rel="noopener noreferrer">Dmitry G</a> · Public domain.';
     }
     tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;});
     $('[role="tabpanel"]').setAttribute('aria-labelledby',tabs[index].id);
