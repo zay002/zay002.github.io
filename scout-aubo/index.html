@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scout 2.0 + AUBO i5</title>
+    <link rel="icon" href="data:,">
     <style>
         body {
             margin: 0;
@@ -35,11 +36,23 @@
             color: #d8e2ee;
             pointer-events: none;
         }
+        .mission-hud { position: absolute; z-index: 2; top: 18px; left: 20px; right: 20px; pointer-events: none; color: #a9ccdf; font: 11px/1.8 ui-monospace, monospace; }
+        .mission-hud strong { color: #eef6ff; font-weight: 500; display: block; font-size: 13px; }
+        .mission-controls { position: absolute; left: 20px; right: 20px; bottom: 16px; display: flex; align-items: center; gap: 10px; color: #a9ccdf; font: 10px system-ui, sans-serif; }
+        .mission-controls button { padding: 8px 0; background: transparent; color: inherit; border: 0; border-radius: 0; font: inherit; text-decoration: underline; text-underline-offset: 5px; cursor: pointer; }
+        .mission-controls button:focus-visible { outline: 2px solid #65d9ff; }
+        .mission-meter { height: 2px; background: #354959; margin-top: 10px; max-width: 240px; }
+        .mission-meter span { display: block; height: 100%; background: #65d9ff; }
+        :root[data-theme="light"] .mission-hud, :root[data-theme="light"] .mission-controls { color: #365b70; }
+        :root[data-theme="light"] .mission-hud strong { color: #152a3b; }
+        @media(max-width: 450px) { .mission-controls { flex-wrap: wrap; } .mission-controls small { width: 100%; } }
     </style>
 </head>
 <body>
     <div id="loading">Loading Models...</div>
-    <div id="demo-container"></div>
+    <div id="demo-container" role="img" aria-label="Mobile robot navigating around an obstacle, picking a part at station A, and delivering it to station B"></div>
+    <div class="mission-hud">SCOUT 2.0 + AUBO i5 / FETCH &amp; DELIVER<strong data-mission-status>Preparing task...</strong><div class="mission-meter"><span data-mission-progress></span></div></div>
+    <div class="mission-controls"><button type="button" data-mission-pause aria-pressed="false">Pause</button><small>Scripted simulation · drag to orbit</small></div>
     <script type="importmap">
       {
         "imports": {
@@ -51,7 +64,7 @@
     <script src="/model-brotli-register.js"></script>
     <script type="module">
         await (window.modelBrotliReady || Promise.resolve());
-        import("./app.js");
+        import("./app.js?v=20261012b");
     </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     return;
   }
 
-  const modules = ["./robot-demo.js"];
+  const modules = ["./robot-demo.js?v=20261012b"];
   const warmedModules = new Set();
   let loadPromise = null;
 

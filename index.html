@@ -90,6 +90,8 @@
       crossorigin
     >
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="engineering.css?v=20261012c">
+    <script defer src="engineering-lab.js?v=20261012c"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="page-transitions.js"></script>
     <script type="importmap">
@@ -100,7 +102,7 @@
       }
     </script>
     <script src="model-brotli-register.js"></script>
-    <script defer src="deferred-scenes.js"></script>
+    <script defer src="deferred-scenes.js?v=20261012c"></script>
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
@@ -114,9 +116,9 @@
           <div class="nav-links" id="primary-nav">
             <a href="#publication">Publication</a>
             <a href="#preprint">Preprint</a>
-            <a href="#robotics-demo">Robotics</a>
             <a href="#education">Education</a>
-            <a href="#coding">Coding</a>
+            <a href="#robotics-demo">Robotics</a>
+            <a href="#engineering">Engineering</a>
             <a href="#contact">Contact</a>
           </div>
           <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false" data-theme-toggle>
@@ -161,7 +163,7 @@
               <div class="hero-internship-status">
                 <span class="status-pill status-pill--internship">
                   <span class="status-pill--pulse" aria-hidden="true"></span>
-                  Open to internships
+                  Open to internships &amp; full-time roles
                 </span>
                 <a class="cv-button" href="resume_en.pdf" target="_blank" rel="noopener noreferrer">
                   <span class="cv-button__lamp" aria-hidden="true"></span>
@@ -226,86 +228,6 @@
         </div>
       </section>
 
-      <section class="section robotics-section" id="robotics-demo" aria-labelledby="robotics-demo-title">
-        <div class="section-heading robotics-heading">
-          <div>
-            <p class="section-kicker">Robotics Showcase</p>
-            <h2 id="robotics-demo-title">My Current Work in Robotics</h2>
-          </div>
-
-          <div class="robotics-boundary" aria-label="Robotics showcase overview">
-            <div>
-              <span>Showcase 01</span>
-              <strong>VLA/WAM-based Robotics Control</strong>
-            </div>
-            <div>
-              <span>Showcase 02</span>
-              <strong>Mobile Manipulation System Integration</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="robotics-demo-grid" aria-label="Robotics interactive demos">
-          <article class="robotics-demo-card">
-            <div class="robotics-demo-card__header">
-              <div>
-                <span>Showcase 01</span>
-                <h3>VLA/WAM-based Robotics Control</h3>
-              </div>
-            </div>
-
-            <div class="robotics-lab" aria-label="AUBO tabletop robot demo">
-              <div class="robotics-viewport">
-                <div id="aubo-demo" class="robot-demo-canvas" role="img" aria-label="Three.js AUBO arm on a tabletop pick-and-place scene"></div>
-              </div>
-
-              <aside class="robotics-console" aria-label="Robot demo autoplay status">
-                <div class="robotics-console__header">
-                  <span>Autoplay sequence</span>
-                  <strong data-robot-active-task>Loop 1: red cube to tray</strong>
-                </div>
-
-                <div class="robotics-autoplay-panel" aria-label="Autoplay loop summary">
-                  <strong>red → blue → yellow</strong>
-                </div>
-
-                <div class="robotics-meter" aria-hidden="true">
-                  <span data-robot-progress></span>
-                </div>
-
-                <ol class="robotics-steps" aria-label="Demo execution stages">
-                  <li data-robot-step="0">Scene scan</li>
-                  <li data-robot-step="1">Target selected</li>
-                  <li data-robot-step="2">Approach and grasp</li>
-                  <li data-robot-step="3">Transport to tray</li>
-                  <li data-robot-step="4">Release and verify</li>
-                </ol>
-              </aside>
-            </div>
-          </article>
-
-          <article class="robotics-demo-card">
-            <div class="robotics-demo-card__header">
-              <div>
-                <span>Showcase 02</span>
-                <h3>Mobile Manipulation System Integration</h3>
-              </div>
-            </div>
-
-            <div class="scout-aubo-lab" aria-label="Scout 2.0 and AUBO i5 mobile manipulator demo">
-              <iframe
-                class="scout-aubo-frame"
-                src="about:blank"
-                data-src="./scout-aubo/index.html"
-                title="Scout 2.0 with AUBO i5 interactive robotics demo"
-                loading="eager"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </article>
-        </div>
-      </section>
-
       <section class="section" id="education" aria-labelledby="education-title">
         <div class="section-heading">
           <div>
@@ -363,49 +285,126 @@
         </div>
       </section>
 
-      <section class="section two-column" id="coding" aria-labelledby="coding-title">
-        <div>
-          <p class="section-kicker">Coding Ability</p>
-          <h2 id="coding-title">AI-Native Development</h2>
-          <p>
-            Practical engineering now starts with agentic coding systems and fast iteration.
-          </p>
-        </div>
-
-        <div class="coding-panel" aria-label="Coding ability">
-          <div class="coding-panel__header">
-            <span>GitHub language profile</span>
+      <section class="section robotics-section" id="robotics-demo" aria-labelledby="robotics-demo-title">
+        <div class="section-heading robotics-heading">
+          <div>
+            <p class="section-kicker">Robotics Showcase</p>
+            <h2 id="robotics-demo-title">My Current Work in Robotics</h2>
           </div>
 
-          <div class="coding-signal-grid">
-            <div class="language-profile" aria-label="Most used GitHub languages">
-              <div class="language-profile__header">
-                <strong data-language-updated>Auto-updated daily</strong>
-              </div>
-              <div class="language-bars" data-language-bars>
-                <div class="language-bar" style="--share: 60.1%; --tone: #63d7ff;">
-                  <span>Python</span><strong>60.1%</strong><i></i>
-                </div>
-                <div class="language-bar" style="--share: 18.3%; --tone: #f7df1e;">
-                  <span>JavaScript</span><strong>18.3%</strong><i></i>
-                </div>
-                <div class="language-bar" style="--share: 14.4%; --tone: #3178c6;">
-                  <span>TypeScript</span><strong>14.4%</strong><i></i>
-                </div>
-                <div class="language-bar" style="--share: 2.2%; --tone: #e34c26;">
-                  <span>HTML</span><strong>2.2%</strong><i></i>
-                </div>
-                <div class="language-bar" style="--share: 1.9%; --tone: #7bf1c7;">
-                  <span>CUDA</span><strong>1.9%</strong><i></i>
-                </div>
-                <div class="language-bar" style="--share: 1.7%; --tone: #8aa4ff;">
-                  <span>CSS</span><strong>1.7%</strong><i></i>
-                </div>
-              </div>
+          <div class="robotics-boundary" aria-label="Robotics showcase overview">
+            <div>
+              <span>Showcase 01</span>
+              <strong>Multi-stage Tabletop Manipulation</strong>
+            </div>
+            <div>
+              <span>Showcase 02</span>
+              <strong>Mobile Fetch & Delivery</strong>
             </div>
           </div>
-
         </div>
+
+        <div class="robotics-demo-grid" aria-label="Robotics interactive demos">
+          <article class="robotics-demo-card">
+            <div class="robotics-demo-card__header">
+              <div>
+                <span>Showcase 01</span>
+                <h3>Multi-stage Tabletop Manipulation</h3>
+                <p>Pick, inspect, sort, then re-grasp and stack. A coordinated six-transfer assembly sequence.</p>
+              </div>
+            </div>
+
+            <div class="robotics-lab" aria-label="AUBO tabletop robot demo">
+              <div class="robotics-viewport">
+                <div class="robot-hud">AUBO i5 / AG95<br><span data-robot-status>Preparing assembly task</span></div>
+                <div id="aubo-demo" class="robot-demo-canvas" role="img" aria-label="Three.js AUBO arm on a tabletop pick-and-place scene"></div>
+              </div>
+
+              <aside class="robotics-console" aria-label="Robot demo autoplay status">
+                <div class="robotics-console__header">
+                  <span>Autoplay sequence</span>
+                  <strong data-robot-active-task>Task 1 / 6: inspect & sort red</strong>
+                </div>
+
+                <div class="robotics-autoplay-panel" aria-label="Autoplay loop summary">
+                  <strong>SORT → RE-GRASP → STACK</strong>
+                </div>
+
+                <div class="robotics-meter" aria-hidden="true">
+                  <span data-robot-progress></span>
+                </div>
+
+                <ol class="robotics-steps" aria-label="Demo execution stages">
+                  <li data-robot-step="0">Observe & plan</li>
+                  <li data-robot-step="1">Approach target</li>
+                  <li data-robot-step="2">Grasp & inspect</li>
+                  <li data-robot-step="3">Transfer & align</li>
+                  <li data-robot-step="4">Place & verify</li>
+                </ol>
+              </aside>
+            </div>
+            <div class="demo-toolbar"><button type="button" data-robot-pause aria-pressed="false">Pause</button><small>Scripted kinematic demonstration · drag to orbit</small></div>
+          </article>
+
+          <article class="robotics-demo-card">
+            <div class="robotics-demo-card__header">
+              <div>
+                <span>Showcase 02</span>
+                <h3>Mobile Fetch &amp; Delivery</h3>
+                <p>Navigate between workstations, dock, collect a part, transport it, and place it at the delivery station.</p>
+              </div>
+            </div>
+
+            <div class="scout-aubo-lab" aria-label="Scout 2.0 and AUBO i5 mobile manipulator demo">
+              <iframe
+                class="scout-aubo-frame"
+                src="about:blank"
+                data-src="./scout-aubo/index.html"
+                title="Scout 2.0 with AUBO i5 interactive robotics demo"
+                loading="eager"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </article>
+        </div>
+        <p class="engineering-note">Robot tasks are scripted simulations of system behavior; no live policy inference or hardware control is running.</p>
+      </section>
+
+      <section class="section" id="engineering" aria-labelledby="engineering-title">
+        <p class="section-kicker">Engineering</p>
+        <h2 id="engineering-title">Technical Skills</h2>
+        <p class="engineering-intro">Interactive demonstrations of point cloud processing, mapping, object detection, and visual inspection.</p>
+        <div class="engineering-lab">
+          <div class="engineering-tabs" role="tablist" aria-label="Engineering demonstrations">
+            <button type="button" role="tab" id="lab-tab-0" aria-controls="lab-panel" aria-selected="true"><span>01</span>Registration</button>
+            <button type="button" role="tab" id="lab-tab-1" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>02</span>Completion</button>
+            <button type="button" role="tab" id="lab-tab-2" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>03</span>LiDAR / SLAM</button>
+            <button type="button" role="tab" id="lab-tab-3" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>04</span>YOLO</button>
+            <button type="button" role="tab" id="lab-tab-4" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>05</span>Inspection</button>
+          </div>
+          <div class="engineering-body" id="lab-panel" role="tabpanel" aria-labelledby="lab-tab-0" tabindex="0">
+            <div class="engineering-stage">
+              <div class="engineering-stage-top"><span>PERCEPTION LAB</span><span data-lab-medium>PROCEDURAL STUDY</span></div>
+              <canvas class="engineering-canvas" role="img" aria-label="Animated engineering concept demonstration">Interactive illustrations of point cloud registration, completion, mapping, detection, and inspection.</canvas>
+              <div class="engineering-legend" data-lab-legend></div>
+            </div>
+            <div class="engineering-detail">
+              <p class="lab-eyebrow" data-lab-tag>01 / Geometry</p>
+              <h3 data-lab-title>Point Cloud Registration</h3>
+              <p data-lab-text>Explore point cloud registration, completion, LiDAR mapping, object detection, and industrial inspection.</p>
+              <ol data-lab-steps></ol>
+              <p class="photo-credit" data-photo-credit hidden></p>
+              <a data-lab-link href="resume_en.pdf">Explore my engineering background</a>
+            </div>
+          </div>
+          <div class="engineering-controls">
+            <button type="button" data-lab-play aria-pressed="true">Pause</button>
+            <input type="range" min="0" max="1000" value="0" aria-label="Animation progress" data-lab-progress>
+            <output data-lab-percent>0%</output>
+          </div>
+        </div>
+        <p class="engineering-note">Concept animations and annotated reference photographs; not live model predictions or recorded project results.</p>
+        <noscript><p>Enable JavaScript to play these studies. See my <a href="resume_en.pdf">CV</a> for research and project details.</p></noscript>
       </section>
 
       <section class="section two-column" id="contact" aria-labelledby="contact-title">
@@ -661,52 +660,6 @@
             closeMobileNav();
           }
         });
-
-        const languageBars = document.querySelector("[data-language-bars]");
-        const languageUpdated = document.querySelector("[data-language-updated]");
-        const languageFormatter = new Intl.DateTimeFormat("en", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-
-        const renderLanguages = ({ languages = [], updatedAt, repoCount }) => {
-          if (!languageBars || !languages.length) return;
-
-          languageBars.replaceChildren(...languages.map((language) => {
-            const share = Number.isFinite(language.share) ? Math.max(0, Math.min(language.share, 100)) : 0;
-            const bar = document.createElement("div");
-            bar.className = "language-bar";
-            bar.style.setProperty("--share", `${share}%`);
-            bar.style.setProperty("--tone", language.color || "#9fb3ff");
-
-            const name = document.createElement("span");
-            name.textContent = language.name;
-
-            const percentage = document.createElement("strong");
-            percentage.textContent = `${share.toFixed(1)}%`;
-
-            bar.append(name, percentage, document.createElement("i"));
-            return bar;
-          }));
-
-          if (languageUpdated && updatedAt) {
-            const date = new Date(updatedAt);
-            const prefix = repoCount ? `${repoCount} repos` : "Public repo mix";
-            languageUpdated.textContent = Number.isNaN(date.getTime())
-              ? prefix
-              : `${prefix} · ${languageFormatter.format(date)}`;
-          }
-        };
-
-        fetch("assets/github-languages.json", {
-          cache: "no-cache",
-        })
-          .then((response) => (response.ok ? response.json() : null))
-          .then((profile) => {
-            if (profile) renderLanguages(profile);
-          })
-          .catch(() => {});
 
         if (document.readyState === "complete") {
           initGsapMotion();

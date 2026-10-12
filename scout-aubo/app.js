@@ -1,3 +1,4 @@
+import { createMission } from "./mission.js?v=20261012";
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ColladaLoader } from 'three/addons/loaders/ColladaLoader.js';
@@ -6,12 +7,14 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 
 let scene, camera, renderer, controls;
 let scoutGroup;
+let mission = null;
+let missionTime = 0;
+let missionPaused = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let missionTcp = null;
 let auboJoints = null;
 let ms42dcJoints = null;
 let wheels = [];
-let scatterProps = [];
 let lastTime = 0;
-let groundTexture = null;
 let animationFrameId = 0;
 let isDemoVisible = true;
 let isDarkMode = true;
@@ -31,10 +34,6 @@ const ARACHNE_MATERIAL_COLORS = {
     gripper: 0x1f5e94,
     sensor: 0x050506,
 };
-const GROUND_SIZE = 36;
-const GROUND_TEXTURE_REPEAT = 8;
-const GROUND_TEXTURE_SPEED = 0.42;
-const SCATTER_WORLD_SPEED = GROUND_TEXTURE_SPEED * (GROUND_SIZE / GROUND_TEXTURE_REPEAT);
 
 window.exposeDemo = () => ({
     scene,
@@ -43,6 +42,9 @@ window.exposeDemo = () => ({
     controls,
     wheels,
     scoutGroup,
+    mission,
+    missionTcp,
+    restart: () => { missionTime = 0; },
 });
 
 init();
@@ -63,7 +65,7 @@ async function init() {
         0.1,
         100
     );
-    camera.position.set(1.75, 1.05, -1.85);
+    camera.position.set(3.6, 2.6, 3.8);
 
     renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -87,7 +89,9 @@ async function init() {
     controls.dampingFactor = 0.05;
     controls.autoRotate = false;
     controls.autoRotateSpeed = 0;
-    controls.target.set(0.24, 0.48, -0.18);
+    controls.target.set(.25, .3, 0);
+    controls.maxDistance = 10;
+    controls.minDistance = 2;
 
     const hemiLight = new THREE.HemisphereLight(0xffffff, isDarkMode ? 0x182233 : 0xdce7f2, isDarkMode ? 1.25 : 1.8);
     scene.add(hemiLight);
@@ -106,9 +110,9 @@ async function init() {
     fillLight.position.set(-2.4, 1.8, -2.2);
     scene.add(fillLight);
 
-    const ground = createMovingGround(isDarkMode);
+    const ground = createMissionGround(isDarkMode);
     scene.add(ground);
-    scene.add(createManipulationProps());
+    scene.add(new THREE.GridHelper(12, 40, 0x385873, 0x203044));
 
     scoutGroup = new THREE.Group();
     scoutGroup.name = 'scout_plus_aubo_group';
@@ -156,6 +160,10 @@ async function init() {
             loadArachneBaseAccessories(urdfRoot),
         ]);
 
+        mission = createMission({ scene, robot: scoutGroup, tcp: missionTcp,
+            apply: values => Object.entries(values).forEach(([key, value]) => applyMjcfJoint(auboJoints[key], value)),
+            fingers: ms42dcJoints,
+        });
         const loading = document.getElementById('loading');
         if (loading) loading.style.display = 'none';
     } catch (e) {
@@ -167,6 +175,11 @@ async function init() {
         }
     }
 
+    const pauseButton = document.querySelector('[data-mission-pause]');
+    const syncPause = () => { pauseButton.textContent = missionPaused ? 'Play' : 'Pause'; pauseButton.setAttribute('aria-pressed', String(missionPaused)); };
+    pauseButton.addEventListener('click', () => { missionPaused = !missionPaused; syncPause(); });
+    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', event => { if (event.matches) { missionPaused = true; syncPause(); } });
+    syncPause();
     window.addEventListener('resize', onWindowResize);
     window.addEventListener('message', (event) => {
         if (event.origin !== window.location.origin) {
@@ -186,6 +199,7 @@ function applyTheme(theme) {
 
     if (scene) {
         scene.background = new THREE.Color(worldBackground);
+        scene.getObjectByName("mission-floor")?.material.color.setHex(isDarkMode ? 0x111c29 : 0xe5edf3);
     }
 
     if (renderer) {
@@ -379,210 +393,14 @@ function prepareColladaVisual(root) {
     });
 }
 
-function createMovingGround(isDarkMode) {
-    groundTexture = createProceduralLunarTexture(isDarkMode);
-
-    const material = new THREE.MeshStandardMaterial({
-        map: groundTexture,
-        color: isDarkMode ? 0x8e969f : 0xf0f2f4,
-        roughness: 0.94,
-        metalness: 0.0,
-    });
-
-    const geometry = new THREE.PlaneGeometry(GROUND_SIZE, GROUND_SIZE, 96, 96);
-    const positions = geometry.attributes.position;
-
-    for (let i = 0; i < positions.count; i += 1) {
-        const x = positions.getX(i);
-        const y = positions.getY(i);
-        const flatPath = Math.abs(x) < 3.2 && Math.abs(y) < 5.4;
-        const edgeRamp = Math.max(0, Math.hypot(x * 0.58, y * 0.42) - 3.0) / 6.6;
-        const ripple =
-            Math.sin(x * 0.68 + y * 0.2) * 0.13 +
-            Math.cos(y * 0.54 - x * 0.24) * 0.1 +
-            Math.sin((x + y) * 1.04) * 0.055;
-        const height = flatPath ? 0 : Math.min(edgeRamp, 1) * ripple;
-
-        positions.setZ(i, height);
-    }
-
-    geometry.computeVertexNormals();
-
-    const ground = new THREE.Mesh(geometry, material);
-
+function createMissionGround(dark) {
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(36, 36), new THREE.MeshStandardMaterial({ color: dark ? 0x111c29 : 0xe5edf3, roughness: .9 }));
+    ground.name = 'mission-floor';
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.01;
+    ground.position.y = -.006;
     ground.receiveShadow = true;
-
     return ground;
 }
-
-function createManipulationProps() {
-    const group = new THREE.Group();
-    group.name = 'moving_scatter_props';
-    scatterProps = [];
-
-    const mats = {
-        crateBlue: new THREE.MeshStandardMaterial({ color: 0x2f9bff, roughness: 0.58, metalness: 0.08 }),
-        crateMint: new THREE.MeshStandardMaterial({ color: 0x58e0bb, roughness: 0.62, metalness: 0.04 }),
-        crateRed: new THREE.MeshStandardMaterial({ color: 0xff5269, roughness: 0.6, metalness: 0.04 }),
-        crateViolet: new THREE.MeshStandardMaterial({ color: 0x8aa4ff, roughness: 0.6, metalness: 0.04 }),
-        crateDark: new THREE.MeshStandardMaterial({ color: 0x203246, roughness: 0.7, metalness: 0.08 }),
-    };
-    const materials = [mats.crateBlue, mats.crateMint, mats.crateRed, mats.crateViolet, mats.crateDark];
-
-    const geometries = [
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.CylinderGeometry(0.5, 0.5, 1, 18),
-        new THREE.DodecahedronGeometry(0.58, 0),
-    ];
-
-    for (let i = 0; i < 6; i += 1) {
-        const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-        const material = materials[Math.floor(Math.random() * materials.length)];
-        const prop = new THREE.Mesh(geometry, material);
-        prop.name = `moving_pickup_candidate_${i + 1}`;
-        prop.castShadow = true;
-        prop.receiveShadow = true;
-        prop.userData.phaseOffset = Math.random() * Math.PI * 2;
-        resetScatterProp(prop, randomBetween(-4.2, 6.2));
-        group.add(prop);
-        scatterProps.push(prop);
-    }
-
-    return group;
-}
-
-function randomBetween(min, max) {
-    return min + Math.random() * (max - min);
-}
-
-function resetScatterProp(prop, x = randomBetween(5.4, 7.0)) {
-    const width = randomBetween(0.08, 0.17);
-    const height = randomBetween(0.05, 0.13);
-    const depth = randomBetween(0.08, 0.18);
-    const lane = Math.random() < 0.5
-        ? randomBetween(-1.28, -0.86)
-        : randomBetween(0.86, 1.28);
-
-    prop.scale.set(width, height, depth);
-    prop.position.set(
-        x,
-        height * 0.5,
-        lane
-    );
-    prop.rotation.set(
-        randomBetween(-0.05, 0.05),
-        randomBetween(0, Math.PI * 2),
-        randomBetween(-0.05, 0.05)
-    );
-    prop.userData.lane = lane;
-    prop.userData.drift = randomBetween(-0.012, 0.012);
-    prop.userData.spin = randomBetween(-0.16, 0.16);
-}
-
-function updateScatterProps(dt, seconds) {
-    scatterProps.forEach((prop) => {
-        prop.position.x -= SCATTER_WORLD_SPEED * dt;
-        prop.position.z = prop.userData.lane + Math.sin(seconds * 0.7 + prop.userData.phaseOffset) * prop.userData.drift;
-        prop.rotation.y += prop.userData.spin * dt;
-
-        if (prop.position.x < -5.2) {
-            resetScatterProp(prop);
-        }
-    });
-}
-
-function createProceduralLunarTexture(isDarkMode) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 512;
-
-    const ctx = canvas.getContext('2d');
-
-    const image = ctx.createImageData(canvas.width, canvas.height);
-    const data = image.data;
-
-    for (let y = 0; y < canvas.height; y += 1) {
-        for (let x = 0; x < canvas.width; x += 1) {
-            const nx = x / canvas.width;
-            const ny = y / canvas.height;
-            const broad =
-                Math.sin(Math.PI * 2 * nx) * 0.045 +
-                Math.cos(Math.PI * 2 * ny) * 0.05 +
-                Math.sin(Math.PI * 2 * (nx + ny)) * 0.035 +
-                Math.cos(Math.PI * 2 * (nx - ny)) * 0.028;
-            const mid =
-                Math.sin(Math.PI * 4 * nx + Math.cos(Math.PI * 2 * ny) * 0.55) * 0.018 +
-                Math.cos(Math.PI * 4 * ny + Math.sin(Math.PI * 2 * nx) * 0.4) * 0.015;
-            const grain =
-                Math.sin(Math.PI * 2 * (nx * 12 + ny * 7)) * 0.006 +
-                Math.cos(Math.PI * 2 * (nx * 15 - ny * 9)) * 0.005;
-            const shade = clamp((isDarkMode ? 0.46 : 0.7) + broad + mid + grain, isDarkMode ? 0.34 : 0.52, isDarkMode ? 0.62 : 0.86);
-            const idx = (y * canvas.width + x) * 4;
-
-            data[idx] = Math.round((isDarkMode ? 180 : 218) * shade);
-            data[idx + 1] = Math.round((isDarkMode ? 187 : 220) * shade);
-            data[idx + 2] = Math.round((isDarkMode ? 196 : 219) * shade);
-            data[idx + 3] = 255;
-        }
-    }
-
-    ctx.putImageData(image, 0, 0);
-
-    const craters = [
-        [112, 132, 42, 0.82],
-        [326, 96, 26, 0.62],
-        [404, 326, 50, 0.76],
-        [178, 372, 32, 0.58],
-        [274, 244, 18, 0.46],
-    ];
-
-    craters.forEach(([x, y, r, opacity]) => drawLunarCrater(ctx, x, y, r, opacity));
-
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(GROUND_TEXTURE_REPEAT, GROUND_TEXTURE_REPEAT);
-    texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8);
-
-    return texture;
-}
-
-function drawLunarCrater(ctx, x, y, radius, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(-0.24);
-    ctx.scale(1.18, 0.78);
-
-    const shadow = ctx.createRadialGradient(-radius * 0.16, -radius * 0.2, radius * 0.12, 0, 0, radius);
-    shadow.addColorStop(0, `rgba(236, 238, 237, ${0.1 * opacity})`);
-    shadow.addColorStop(0.42, `rgba(137, 140, 140, ${0.1 * opacity})`);
-    shadow.addColorStop(0.76, `rgba(68, 70, 72, ${0.18 * opacity})`);
-    shadow.addColorStop(1, 'rgba(68, 70, 72, 0)');
-
-    ctx.fillStyle = shadow;
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.strokeStyle = `rgba(246, 248, 248, ${0.16 * opacity})`;
-    ctx.lineWidth = 2.2;
-    ctx.beginPath();
-    ctx.arc(-radius * 0.05, -radius * 0.05, radius * 0.78, Math.PI * 0.95, Math.PI * 1.65);
-    ctx.stroke();
-
-    ctx.strokeStyle = `rgba(72, 74, 76, ${0.09 * opacity})`;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(radius * 0.04, radius * 0.05, radius * 0.72, Math.PI * 0.08, Math.PI * 0.72);
-    ctx.stroke();
-
-    ctx.restore();
-}
-
-// ==== AUBO MJCF Loader logic ====
 
 async function loadAubo(parent) {
     const [
@@ -750,6 +568,9 @@ async function loadArachneEndEffector(tool0) {
     adapter.add(gripper);
     adapter.add(createArachneEeCamera(cameraSupport, cameraBody));
     tool0.add(adapter);
+    missionTcp = new THREE.Object3D();
+    missionTcp.position.set(0, 0, .16);
+    tool0.add(missionTcp);
 
     ms42dcJoints = {
         left: leftJoint,
@@ -1340,65 +1161,29 @@ function applyMjcfJoint(group, value) {
     );
 }
 
-function updateAuboIntegrationMotion(seconds) {
+function updateAuboIntegrationMotion() {
     if (!auboJoints) return;
-
-    const scan = Math.sin(seconds * 0.48);
-    const reach = Math.sin(seconds * 0.5 + 1.15);
-    const fold = Math.sin(seconds * 0.54 + 2.35);
-    const wristPitch = Math.sin(seconds * 0.74 + 2.8);
-    const wristRoll = Math.sin(seconds * 1.18 + 0.4) + Math.sin(seconds * 2.05 + 1.1) * 0.32;
-    const toolTwist = Math.sin(seconds * 1.46 + 0.85);
-
-    applyMjcfJoint(auboJoints.shoulder, 0.35 - scan * 0.68);
-    applyMjcfJoint(auboJoints.upper, -0.82 + reach * 0.28);
-    applyMjcfJoint(auboJoints.fore, 1.18 + fold * 0.32);
-    applyMjcfJoint(auboJoints.wrist1, 0.32 + Math.cos(seconds * 0.64) * 0.62);
-    applyMjcfJoint(auboJoints.wrist2, 0.74 + wristPitch * 0.56 + Math.sin(seconds * 1.33) * 0.12);
-    applyMjcfJoint(auboJoints.wrist3, wristRoll * 1.05);
-    applyMjcfJoint(auboJoints.tool0, toolTwist * 0.52);
-
-    if (ms42dcJoints) {
-        const finger = 0.18 + (Math.sin(seconds * 1.35) + 1) * 0.12;
-        ms42dcJoints.left.rotation.z = -finger;
-        ms42dcJoints.right.rotation.z = finger;
-    }
+    const home = { shoulder: 0, upper: -1.2, fore: 1.9, wrist1: .5, wrist2: 1.57, wrist3: 0 };
+    Object.entries(home).forEach(([key, value]) => applyMjcfJoint(auboJoints[key], value));
 }
 
 function animate() {
     animationFrameId = 0;
-
-    if (!isDemoVisible || document.visibilityState === 'hidden') {
-        return;
-    }
-
+    if (!isDemoVisible || document.visibilityState === 'hidden') return;
     const time = performance.now();
-    const seconds = time * 0.001;
-    const dt = (time - lastTime) / 1000;
+    const dt = Math.min((time - lastTime) / 1000, .06);
     lastTime = time;
-
-    // 轮子滚动速度。
-    // 如果视觉方向反了，把 wheelSpeed 改成 -3.0。
-    const wheelSpeed = -3.0;
-
-    if (groundTexture) {
-        groundTexture.offset.x = (groundTexture.offset.x + dt * GROUND_TEXTURE_SPEED) % 1;
+    if (mission) {
+        if (!missionPaused) missionTime += dt;
+        const state = mission.update(missionTime);
+        document.querySelector('[data-mission-status]').textContent = state.status;
+        document.querySelector('[data-mission-progress]').style.width = `${state.progress * 100}%`;
+        if (!missionPaused && state.moving) wheels.forEach(wheel => {
+            wheel.userData.spinAngle -= state.distance / .165 * wheel.userData.spinSign * (missionTime % 32 < 6 ? -1 : 1);
+            wheel.rotation.set(0, 0, 0);
+            wheel.rotateOnAxis(wheel.userData.spinAxis, wheel.userData.spinAngle);
+        });
     }
-
-    updateScatterProps(dt, seconds);
-
-    wheels.forEach((wheel) => {
-        wheel.userData.spinAngle +=
-            wheelSpeed * dt * wheel.userData.spinSign;
-
-        wheel.rotation.set(0, 0, 0);
-        wheel.rotateOnAxis(
-            wheel.userData.spinAxis,
-            wheel.userData.spinAngle
-        );
-    });
-
-    updateAuboIntegrationMotion(seconds);
     controls.update();
     renderer.render(scene, camera);
     animationFrameId = requestAnimationFrame(animate);

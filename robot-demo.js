@@ -1,3 +1,4 @@
+import { solvePosition } from "./robot-kinematics.js";
 import * as THREE from "three";
 import { OrbitControls } from "https://unpkg.com/three@0.161.0/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "https://unpkg.com/three@0.161.0/examples/jsm/loaders/OBJLoader.js";
@@ -94,7 +95,8 @@ function initRobotDemo(container) {
   renderer.domElement.style.background = isDarkMode ? "#05070c" : "#ffffff";
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enabled = false;
+  controls.enabled = true;
+  controls.enablePan = false;
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.minDistance = 0.62;
@@ -166,9 +168,34 @@ function initRobotDemo(container) {
     nextStartAt: 0,
   };
 
+  window.exposeTabletopDemo = () => ({ scene, robot, active, objects, restart: () => { active.autoIndex = 0; resetSequence(); startNextLoop(simulationTime); } });
+
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
 
+  let paused = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let simulationTime = 0;
+  let lastFrame = 0;
+  const pauseButton = document.querySelector('[data-robot-pause]');
+  const updatePause = () => {
+    pauseButton.textContent = paused ? 'Play' : 'Pause';
+    pauseButton.setAttribute('aria-pressed', String(paused));
+  };
+  pauseButton.addEventListener('click', () => { paused = !paused; updatePause(); });
+  updatePause();
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', event => {
+    if (event.matches) { paused = true; updatePause(); }
+  });
+  const targetBox = new THREE.BoxHelper(objects.cubes.red.mesh, 0x65d9ff);
+  scene.add(targetBox);
+  const trailPoints = new Float32Array(240 * 3);
+  const trailGeometry = new THREE.BufferGeometry();
+  trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPoints, 3));
+  trailGeometry.setDrawRange(0, 0);
+  const trail = new THREE.Line(trailGeometry, new THREE.LineBasicMaterial({ color: 0x65d9ff, transparent: true, opacity: .65 }));
+  trail.frustumCulled = false;
+  scene.add(trail);
+  let trailCount = 0;
   let animationFrameId = 0;
   let isDemoVisible = true;
 
@@ -199,10 +226,10 @@ function initRobotDemo(container) {
   
   if (robot.loadPromise) {
     robot.loadPromise.finally(() => {
-      startNextLoop(performance.now());
+      startNextLoop(simulationTime);
     });
   } else {
-    startNextLoop(performance.now());
+    startNextLoop(simulationTime);
   }
 
   updateAnimationLoop();
@@ -218,7 +245,7 @@ function initRobotDemo(container) {
     }
   }
 
-  function startNextLoop(now = performance.now()) {
+  function startNextLoop(now = simulationTime) {
     const label = LOOP_ORDER[active.autoIndex % LOOP_ORDER.length];
     const cube = objects.cubes[label] || objects.cubes.red;
 
@@ -232,11 +259,27 @@ function initRobotDemo(container) {
     active.attached = false;
     active.released = false;
     active.pose = REAL_POSES.home;
-    active.dropPosition.copy(getCubeDropPosition(cube, objects.trayDrop));
-    active.sequence = buildSequence(cube, objects.trayDrop);
+    const stacking = active.autoIndex >= 3;
+    active.dropPosition.copy(stacking
+      ? new THREE.Vector3(.28, .22, TABLE_TOP_Z + CUBE_SIZE / 2 + (active.autoIndex - 3) * CUBE_SIZE)
+      : getCubeDropPosition(cube, objects.trayDrop));
+    let seed = { ...active.pose };
+    const solve = (point) => {
+      if (!robot.real) return REAL_POSES.carryMid;
+      seed = solvePosition({
+        joints: ['shoulderPan', 'shoulderLift', 'elbow', 'wrist1', 'wrist2'],
+        values: seed, target: point,
+        apply: value => updateRealRobot(robot.real, .1, value),
+        position: () => getRobotTcpWorldPosition(robot, point),
+      });
+      return { ...seed };
+    };
+    active.sequence = buildSequence(cube, active.dropPosition, solve, stacking);
+    trailCount = 0;
+    trailGeometry.setDrawRange(0, 0);
     active.nextStartAt = 0;
 
-    objects.targetRing.visible = false;
+    objects.targetRing.visible = true;
     objects.targetRing.position.set(cube.home.x, cube.home.y, cube.home.z + 0.035);
     objects.targetRing.material.color.setHex(cube.hex);
     objects.ghostPath.visible = false;
@@ -244,7 +287,7 @@ function initRobotDemo(container) {
 
     if (ui.status) ui.status.textContent = "Autoplay scene scan";
     if (ui.mode) ui.mode.textContent = "Fixed Three.js loop";
-    if (ui.task) ui.task.textContent = `Loop ${active.autoIndex + 1}: ${cube.label} cube to tray`;
+    if (ui.task) ui.task.textContent = `Task ${active.autoIndex + 1} / 6: ${stacking ? "re-grasp & stack" : "inspect & sort"} ${cube.label}`;
   }
 
   function resetSequence() {
@@ -283,7 +326,10 @@ function initRobotDemo(container) {
       return;
     }
 
-    updateCameraOrbit(camera, controls, now);
+    const dt = lastFrame ? Math.min(now - lastFrame, 60) : 0;
+    lastFrame = now;
+    if (!paused) simulationTime += dt;
+    now = simulationTime;
     controls.update();
     if (active.running) {
       updateSequence(now);
@@ -292,6 +338,14 @@ function initRobotDemo(container) {
     }
 
     updateRobot(robot, target, targetOpen.value, active.pose);
+    targetBox.setFromObject(active.selected.mesh);
+    if (!paused && active.running) {
+      const tcp = getRobotTcpWorldPosition(robot, target);
+      if (trailCount >= 240) { trailPoints.copyWithin(0, 3); trailCount = 239; }
+      tcp.toArray(trailPoints, trailCount++ * 3);
+      trailGeometry.attributes.position.needsUpdate = true;
+      trailGeometry.setDrawRange(0, trailCount);
+    }
     renderer.render(scene, camera);
     animationFrameId = requestAnimationFrame(animate);
   }
@@ -377,7 +431,7 @@ function initRobotDemo(container) {
       active.selected.mesh.position.copy(active.dropPosition);
       active.selected.mesh.quaternion.identity();
       active.running = false;
-      active.autoIndex = (active.autoIndex + 1) % LOOP_ORDER.length;
+      active.autoIndex = (active.autoIndex + 1) % 6;
       active.nextStartAt = now + LOOP_RESTART_DELAY * 1000;
       objects.targetRing.visible = false;
       objects.ghostPath.visible = false;
@@ -469,7 +523,7 @@ function createWorld(scene, mats, isDarkMode) {
       opacity: 0.82,
     })
   );
-  targetRing.rotation.x = Math.PI / 2;
+  scene.add(targetRing);
   targetRing.visible = false;
 
   const ghostPath = new THREE.Mesh(
@@ -1108,51 +1162,31 @@ function solvePlanarArm(origin, wristTarget, scale = 1.0, radialOffset = 0, late
   };
 }
 
-function buildSequence(cube, trayDrop) {
-  const cubePoses = REAL_POSES.tasks[cube.label] || REAL_POSES.tasks.red;
+function buildSequence(cube, destination, solve, stacking) {
+  const source = cube.mesh.position.clone().sub(TCP_TO_CUBE_CENTER);
+  const end = destination.clone().sub(TCP_TO_CUBE_CENTER);
+  const aboveSource = source.clone().add(new THREE.Vector3(0, 0, .14));
+  const aboveEnd = end.clone().add(new THREE.Vector3(0, 0, .14));
+  const inspect = new THREE.Vector3(.33, -.02, .32);
   const home = estimateTcpFromPose(REAL_POSES.home);
-  const start = cube.home
-    .clone()
-    .add(GRASP_VISUAL_TCP_BIAS)
-    .sub(TCP_TO_CUBE_CENTER);
-  const mid = estimateTcpFromPose(REAL_POSES.carryMid);
-  const end = getCubeDropPosition(cube, trayDrop)
-    .add(GRASP_VISUAL_TCP_BIAS)
-    .sub(TCP_TO_CUBE_CENTER);
-
-  return [
-    step("Scene scan", 0, 0.6, home, 0.1, {
-      realPose: REAL_POSES.home,
-    }),
-
-    step("Moving from home to cube start", 1, 1.2, start, cubePoses.start.open, {
-      realPose: cubePoses.start.pose,
-    }),
-
-    step("Closing gripper at start", 2, 0.55, start, cubePoses.end.open, {
-      attach: true,
-      attachAt: 0.72,
-      realPose: cubePoses.start.pose,
-    }),
-
-    step("Carrying through fixed midpoint", 3, 1.25, mid, cubePoses.end.open, {
-      realPose: REAL_POSES.carryMid,
-    }),
-
-    step("Moving from midpoint to task end", 3, 1.25, end, cubePoses.end.open, {
-      realPose: cubePoses.end.pose,
-    }),
-
-    step("Opening gripper at end", 4, 0.55, end, 0.1, {
-      release: true,
-      releaseAt: 0.2,
-      realPose: cubePoses.end.pose,
-    }),
-
-    step("Returning home", 4, 1.0, home, 0.1, {
-      realPose: REAL_POSES.home,
-    }),
+  const waypoints = [
+    ['Observe & plan next transfer', 0, .7, home, .1],
+    ['Approach from above', 1, 1.4, aboveSource, .1],
+    ['Descend to grasp', 1, .9, source, .1],
+    ['Close gripper', 2, .6, source, .032, { attach: true, attachAt: .8 }],
+    ['Lift clear of workspace', 2, 1.0, aboveSource, .032],
+    [stacking ? 'Reorient for assembly' : 'Move to inspection pose', 2, 1.2, inspect, .032],
+    [stacking ? 'Check stack alignment' : 'Inspect held object', 2, 1.2, inspect, .032],
+    ['Transfer above destination', 3, 1.5, aboveEnd, .032],
+    [stacking ? 'Lower onto stack' : 'Lower into sorting tray', 3, 1.1, end, .032],
+    ['Release & verify placement', 4, .65, end, .1, { release: true, releaseAt: .7 }],
+    ['Retract vertically', 4, 1.0, aboveEnd, .1],
+    ['Return to observation pose', 4, 1.2, home, .1],
   ];
+  return waypoints.map(([status, stage, duration, target, open, flags = {}], index) =>
+    step(status, stage, duration, target, open, {
+      ...flags, realPose: index === 0 || index === waypoints.length - 1 ? REAL_POSES.home : solve(target),
+    }));
 }
 
 function createAutronPoseTable() {
