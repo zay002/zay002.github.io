@@ -106,6 +106,75 @@
     </script>
     <script src="model-brotli-register.js"></script>
     <script defer src="deferred-scenes.js?v=20261012d"></script>
+    <!-- Homepage visual cleanup: unified Education typography and fewer decorative rules. -->
+    <style id="homepage-visual-cleanup">
+      /* Keep all four education entries on the normal body-text scale. */
+      #education .education-row time,
+      #education .education-row h3,
+      #education .education-row p {
+        font-size: 1rem;
+        line-height: 1.55;
+        letter-spacing: normal;
+      }
+      #education .education-row h3 {
+        font-weight: 600;
+      }
+      #education .education-row {
+        padding-block: 13px;
+      }
+      #education .education-row + .education-row {
+        border-top: 0;
+      }
+      #education .education-list {
+        border-top: 0;
+        border-bottom: 0;
+      }
+
+      /* Use whitespace, not repeated hairlines, to separate major sections. */
+      .page-shell > .section {
+        border-top: 0;
+        border-bottom: 0;
+      }
+      .page-shell > .section::before,
+      .page-shell > .section::after {
+        border-top: 0;
+        border-bottom: 0;
+      }
+
+      /* Remove internal separator rules without flattening media/card outlines. */
+      .publication-list > .publication-card + .publication-card,
+      .journey-stages > .journey-stage + .journey-stage {
+        border-top: 0;
+      }
+
+      /* Remove the decorative horizontal rule below the Robotics heading. */
+      #robotics-journey .section-heading,
+      #robotics-journey .section-heading > div,
+      #robotics-journey #journey-title {
+        border-bottom: 0 !important;
+        border-top: 0 !important;
+        box-shadow: none;
+        background-image: none;
+      }
+      #robotics-journey .section-heading::before,
+      #robotics-journey .section-heading::after,
+      #robotics-journey #journey-title::before,
+      #robotics-journey #journey-title::after {
+        content: none !important;
+        display: none !important;
+      }
+
+      /* Maintain readable grouping when the education grid stacks on mobile. */
+      @media (max-width: 760px) {
+        #education .education-row {
+          gap: 3px;
+          padding-block: 14px;
+        }
+        #education .education-row h3 {
+          gap: 10px;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
@@ -231,7 +300,7 @@
       </section>
 
       <section class="section" id="education" aria-labelledby="education-title">
-        <h2 class="section-kicker" id="education-title">Education</h2>
+        <div class="section-kicker" id="education-title" role="heading" aria-level="2">Education</div>
 
         <div class="education-list" aria-label="Education timeline">
           <article class="education-row">
