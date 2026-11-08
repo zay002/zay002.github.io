@@ -449,6 +449,7 @@ function initRobotDemo(container) {
     const height = Math.max(rect.height, 1);
 
     camera.aspect = width / height;
+    camera.zoom = Math.min(1, camera.aspect / 1.25);
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
   }

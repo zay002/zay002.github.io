@@ -1,0 +1,159 @@
+#robotics-demo .robotics-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+#robotics-demo .robotics-heading h2 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0;
+}
+
+.illustration-tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.illustration-tabs button {
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: 600 1.05rem / 1.4 var(--sans);
+  cursor: pointer;
+}
+
+.illustration-tabs button[aria-selected="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.illustration-tabs button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+#robotics-demo .robotics-demo-grid {
+  display: block;
+}
+
+#robotics-demo [role="tabpanel"][hidden] {
+  display: none;
+}
+
+#robotics-demo .robotics-demo-card {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#robotics-demo .robotics-demo-card__header {
+  padding: 0 0 12px;
+}
+
+#robotics-demo .robotics-demo-card__header p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+#robotics-demo .robotics-lab {
+  display: block;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+#robotics-demo .robotics-viewport,
+#robotics-demo .scout-aubo-lab {
+  height: 480px;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+#robotics-demo .robotics-viewport {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+#robotics-demo .robot-demo-canvas,
+#robotics-demo .scout-aubo-frame {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+#robotics-demo .robotics-console {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 0;
+  border: 0;
+  background: transparent;
+}
+
+#robotics-demo .robotics-console__header {
+  display: block;
+}
+
+#robotics-demo .robotics-console__header > span {
+  display: none;
+}
+
+#robotics-demo .robotics-console__header strong {
+  font-size: 1rem;
+}
+
+#robotics-demo .robotics-meter {
+  margin: 0;
+}
+
+#robotics-demo .robot-hud {
+  position: absolute;
+  inset: 12px auto auto 16px;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  #robotics-demo .robotics-heading h2 {
+    font-size: 1.65rem;
+  }
+
+  .illustration-tabs {
+    width: 100%;
+    gap: 18px;
+  }
+
+  .illustration-tabs button {
+    flex: 1;
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  #robotics-demo .robotics-viewport,
+  #robotics-demo .scout-aubo-lab {
+    height: 380px;
+  }
+
+  #robotics-demo .robotics-console {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+}

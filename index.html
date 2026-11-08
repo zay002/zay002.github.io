@@ -5,24 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Li Zhaoyang's academic homepage: computing, deep learning, multimodal learning, 3D perception, point cloud understanding, robotics, and embodied AI."
+      content="Li Zhaoyang's research and engineering in 3D perception, vision-language-action policies and mobile manipulation, with experiments from simulation to real robots."
     >
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://zay002.github.io/">
     <meta property="og:type" content="profile">
-    <meta property="og:title" content="Li Zhaoyang | Computing and 3D Perception">
+    <meta property="og:title" content="Li Zhaoyang | Robotics, Embodied AI &amp; 3D Perception">
     <meta
       property="og:description"
-      content="Academic homepage of Li Zhaoyang, focused on deep learning, multimodal learning, 3D perception, point cloud understanding, robotics, and embodied AI."
+      content="Research, publications and robot experiments by Li Zhaoyang: 3D perception, VLA policies and full-system mobile manipulation."
     >
     <meta property="og:url" content="https://zay002.github.io/">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Li Zhaoyang | Computing and 3D Perception">
+    <meta name="twitter:title" content="Li Zhaoyang | Robotics, Embodied AI &amp; 3D Perception">
     <meta
       name="twitter:description"
-      content="Academic homepage of Li Zhaoyang, focused on deep learning, multimodal learning, 3D perception, point cloud understanding, robotics, and embodied AI."
+      content="Research, publications and robot experiments by Li Zhaoyang: 3D perception, VLA policies and full-system mobile manipulation."
     >
-    <title>Li Zhaoyang | Computing, Deep Learning, 3D Perception</title>
+    <title>Li Zhaoyang | Robotics, Embodied AI &amp; 3D Perception</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M17 45V18h7v21h22v6H17Z' fill='white'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -90,8 +90,11 @@
       crossorigin
     >
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="engineering.css?v=20261012d">
-    <script defer src="engineering-lab.js?v=20261012d"></script>
+    <link rel="stylesheet" href="robotics-journey.css">
+    <link rel="stylesheet" href="homepage-layout.css">
+    <link rel="stylesheet" href="robotics-illustrations.css">
+    <script defer src="robotics-illustrations.js"></script>
+    <script defer src="robotics-journey.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="page-transitions.js"></script>
     <script type="importmap">
@@ -117,8 +120,7 @@
             <a href="#publication">Publication</a>
             <a href="#preprint">Preprint</a>
             <a href="#education">Education</a>
-            <a href="#robotics-demo">Robotics</a>
-            <a href="#engineering">Engineering</a>
+            <a href="#robotics-journey">Robotics</a>
             <a href="#contact">Contact</a>
           </div>
           <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false" data-theme-toggle>
@@ -229,73 +231,105 @@
       </section>
 
       <section class="section" id="education" aria-labelledby="education-title">
+        <h2 class="section-kicker" id="education-title">Education</h2>
+
+        <div class="education-list" aria-label="Education timeline">
+          <article class="education-row">
+            <time>2026&ndash;Present</time>
+            <h3><img class="education-logo" src="SWJTU.png" alt="">Southwest Jiaotong University</h3>
+            <p>PhD Student, Computer Science</p>
+          </article>
+          <article class="education-row">
+            <time>2025&ndash;2026</time>
+            <h3><img class="education-logo" src="SWJTU.png" alt="">Southwest Jiaotong University</h3>
+            <p>M.Sc. Student, Computer Science</p>
+          </article>
+          <article class="education-row">
+            <time>2022&ndash;2026</time>
+            <h3><img class="education-logo" src="CENTRALE.png" alt="">École Centrale de Marseille</h3>
+            <p>Generalist Engineering</p>
+          </article>
+          <article class="education-row">
+            <time>2020&ndash;2025</time>
+            <h3><img class="education-logo" src="SWJTU.png" alt="">Southwest Jiaotong University</h3>
+            <p>Undergraduate, Electronic Information Engineering</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section journey-section" id="robotics-journey" aria-labelledby="journey-title">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">Education</p>
-            <h2 id="education-title">Academic Path</h2>
+            <p class="section-kicker">Robotics / 2024 &ndash; 2026</p>
+            <h2 id="journey-title">From Policies to Physical Systems</h2>
           </div>
         </div>
 
-        <div class="timeline" aria-label="Education timeline">
-          <article class="timeline-item">
-            <time>2026-PRESENT</time>
-            <div class="timeline-content">
-              <div>
-                <h3>Southwest Jiaotong University</h3>
-                <p>PhD Student, Computer Science</p>
-                <p>Advisor: Prof. Dr. Tianrui Li</p>
-              </div>
-              <img
-                class="school-logo school-logo--seal"
-                src="SWJTU.png"
-                alt="Southwest Jiaotong University logo"
-              >
+        <div class="journey-stages">
+          <article class="journey-stage" aria-labelledby="journey-2024">
+            <div class="journey-copy">
+              <time datetime="2024">2024</time>
+              <h3 id="journey-2024">Code as Policy &amp; Value Maps</h3>
+              <p>VoxPoser experiments: language-driven code and 3D value maps for simulated manipulation.</p>
+            </div>
+            <div class="journey-media">
+              <figure>
+                <video controls muted playsinline preload="none" width="1280" height="594" poster="assets/videos/web/2024-voxposer-code-policy-value-maps.jpg" aria-label="2024 VoxPoser simulation and spatial value-map experiment">
+                  <source src="assets/videos/web/2024-voxposer-code-policy-value-maps.mp4" type="video/mp4">
+                  <a href="assets/videos/web/2024-voxposer-code-policy-value-maps.mp4">Watch the VoxPoser experiment</a>
+                </video>
+                <figcaption><strong>VoxPoser</strong><span>Code policies &amp; value maps</span></figcaption>
+              </figure>
             </div>
           </article>
 
-          <article class="timeline-item">
-            <time>2025-2026</time>
-            <div class="timeline-content">
-              <div>
-                <h3>Southwest Jiaotong University</h3>
-                <p>M.Sc. Student, Computer Science</p>
-                <p>Advisor: Prof. Dr. Tianrui Li</p>
-              </div>
-              <img
-                class="school-logo school-logo--seal"
-                src="SWJTU.png"
-                alt="Southwest Jiaotong University logo"
-              >
+          <article class="journey-stage" aria-labelledby="journey-2025">
+            <div class="journey-copy">
+              <time datetime="2025">2025</time>
+              <h3 id="journey-2025">VLA / Sim-to-Sim / Sim-to-Real</h3>
+              <p>Adapted &pi;0 / OpenVLA policies across simulation and real robots, connecting visual observations to action execution.</p>
+              <p class="journey-stack">MuJoCo &middot; RM65B &middot; AUBO i5</p>
+            </div>
+            <div class="journey-media journey-media--pair">
+              <figure>
+                <video controls muted playsinline preload="none" width="1280" height="720" poster="assets/videos/web/2025-aubo-i5-visual-manipulation.jpg" aria-label="2025 AUBO i5 real-world manipulation experiment">
+                  <source src="assets/videos/web/2025-aubo-i5-visual-manipulation.mp4" type="video/mp4">
+                  <a href="assets/videos/web/2025-aubo-i5-visual-manipulation.mp4">Watch the AUBO experiment</a>
+                </video>
+                <figcaption><strong>AUBO i5</strong><span>Visual manipulation</span></figcaption>
+              </figure>
+              <figure>
+                <video controls muted playsinline preload="none" width="960" height="720" poster="assets/videos/web/2025-rm65b-sim-to-real.jpg" aria-label="2025 RM65B simulation and real-arm integration">
+                  <source src="assets/videos/web/2025-rm65b-sim-to-real.mp4" type="video/mp4">
+                  <a href="assets/videos/web/2025-rm65b-sim-to-real.mp4">Watch the RM65B experiment</a>
+                </video>
+                <figcaption><strong>RealMan RM65B</strong><span>Sim-to-real integration</span></figcaption>
+              </figure>
             </div>
           </article>
 
-          <article class="timeline-item">
-            <time>2022-2025</time>
-            <div class="timeline-content">
-              <div>
-                <h3>Centrale Méditerranée</h3>
-                <p>Generalist Engineering student</p>
-              </div>
-              <img
-                class="school-logo school-logo--wide"
-                src="CENTRALE.png"
-                alt="Centrale Méditerranée logo"
-              >
+          <article class="journey-stage" aria-labelledby="journey-2026">
+            <div class="journey-copy">
+              <time datetime="2026">2026</time>
+              <h3 id="journey-2026">Mobile Manipulation, from the Drivers Up</h3>
+              <p>Independently built a mobile manipulator: hardware, drivers, multi-sensor integration and whole-system control, with interfaces for DL / RL / agentic methods.</p>
+              <p class="journey-stack">Scout 2.0 + AUBO i5 &middot; ROS 2 &middot; RGB-D + LiDAR</p>
             </div>
-          </article>
-
-          <article class="timeline-item">
-            <time>2020-2022</time>
-            <div class="timeline-content">
-              <div>
-                <h3>Southwest Jiaotong University</h3>
-                <p>Undergraduate, Electronic Information Engineering</p>
-              </div>
-              <img
-                class="school-logo school-logo--seal"
-                src="SWJTU.png"
-                alt="Southwest Jiaotong University logo"
-              >
+            <div class="journey-media journey-media--pair">
+              <figure>
+                <video controls muted playsinline preload="none" width="1280" height="720" poster="assets/videos/web/2026-mobile-manipulator-grasp-and-lift.jpg?v=2" aria-label="2026 mobile manipulator approach and grasp experiment">
+                  <source src="assets/videos/web/2026-mobile-manipulator-grasp-and-lift.mp4?v=2" type="video/mp4">
+                  <a href="assets/videos/web/2026-mobile-manipulator-grasp-and-lift.mp4">Watch the mobile robot experiment</a>
+                </video>
+                <figcaption><strong>Mobile manipulator</strong><span>Grasp &amp; lift</span></figcaption>
+              </figure>
+              <figure>
+                <video controls muted playsinline preload="none" width="960" height="540" poster="assets/videos/web/2026-mobile-manipulator-arm-base-coordination.jpg?v=2" aria-label="2026 integrated mobile manipulation demonstration">
+                  <source src="assets/videos/web/2026-mobile-manipulator-arm-base-coordination.mp4?v=2" type="video/mp4">
+                  <a href="assets/videos/web/2026-mobile-manipulator-arm-base-coordination.mp4">Watch the integrated system demonstration</a>
+                </video>
+                <figcaption><strong>Mobile manipulator</strong><span>Arm-base coordination</span></figcaption>
+              </figure>
             </div>
           </article>
         </div>
@@ -304,29 +338,21 @@
       <section class="section robotics-section" id="robotics-demo" aria-labelledby="robotics-demo-title">
         <div class="section-heading robotics-heading">
           <div>
-            <p class="section-kicker">Robotics Showcase</p>
-            <h2 id="robotics-demo-title">My Current Work in Robotics</h2>
+            <p class="section-kicker">Interactive Illustrations</p>
+            <h2 id="robotics-demo-title">Robotics in Motion</h2>
           </div>
 
-          <div class="robotics-boundary" aria-label="Robotics showcase overview">
-            <div>
-              <span>Showcase 01</span>
-              <strong>Multi-stage Tabletop Manipulation</strong>
-            </div>
-            <div>
-              <span>Showcase 02</span>
-              <strong>Mobile Fetch & Delivery</strong>
-            </div>
+          <div class="illustration-tabs" role="tablist" aria-label="Robot illustrations">
+            <button type="button" id="tabletop-tab" role="tab" aria-controls="tabletop-panel" aria-selected="true">Tabletop manipulation</button>
+            <button type="button" id="mobile-tab" role="tab" aria-controls="mobile-panel" aria-selected="false" tabindex="-1">Mobile manipulation</button>
           </div>
         </div>
 
         <div class="robotics-demo-grid" aria-label="Robotics interactive demos">
-          <article class="robotics-demo-card">
+          <article class="robotics-demo-card" id="tabletop-panel" role="tabpanel" aria-labelledby="tabletop-tab" tabindex="0">
             <div class="robotics-demo-card__header">
               <div>
-                <span>Showcase 01</span>
-                <h3>Multi-stage Tabletop Manipulation</h3>
-                <p>Pick, inspect, sort, then re-grasp and stack. A coordinated six-transfer assembly sequence.</p>
+                <p>AUBO i5 + AG95 &middot; Sort, re-grasp &amp; stack</p>
               </div>
             </div>
 
@@ -342,32 +368,19 @@
                   <strong data-robot-active-task>Task 1 / 6: inspect & sort red</strong>
                 </div>
 
-                <div class="robotics-autoplay-panel" aria-label="Autoplay loop summary">
-                  <strong>SORT → RE-GRASP → STACK</strong>
-                </div>
-
                 <div class="robotics-meter" aria-hidden="true">
                   <span data-robot-progress></span>
                 </div>
 
-                <ol class="robotics-steps" aria-label="Demo execution stages">
-                  <li data-robot-step="0">Observe & plan</li>
-                  <li data-robot-step="1">Approach target</li>
-                  <li data-robot-step="2">Grasp & inspect</li>
-                  <li data-robot-step="3">Transfer & align</li>
-                  <li data-robot-step="4">Place & verify</li>
-                </ol>
               </aside>
             </div>
             <div class="demo-toolbar"><button type="button" data-robot-pause aria-pressed="false">Pause</button></div>
           </article>
 
-          <article class="robotics-demo-card">
+          <article class="robotics-demo-card" id="mobile-panel" role="tabpanel" aria-labelledby="mobile-tab" tabindex="0" hidden>
             <div class="robotics-demo-card__header">
               <div>
-                <span>Showcase 02</span>
-                <h3>Mobile Fetch &amp; Delivery</h3>
-                <p>Navigate between workstations, dock, collect a part, transport it, and place it at the delivery station.</p>
+                <p>Scout 2.0 + AUBO i5 &middot; Fetch &amp; deliver</p>
               </div>
             </div>
 
@@ -383,42 +396,6 @@
             </div>
           </article>
         </div>
-      </section>
-
-      <section class="section" id="engineering" aria-labelledby="engineering-title">
-        <p class="section-kicker">Engineering</p>
-        <h2 id="engineering-title">Technical Skills</h2>
-        <p class="engineering-intro">Interactive demonstrations of point cloud processing, mapping, object detection, and visual inspection.</p>
-        <div class="engineering-lab">
-          <div class="engineering-tabs" role="tablist" aria-label="Engineering demonstrations">
-            <button type="button" role="tab" id="lab-tab-0" aria-controls="lab-panel" aria-selected="true"><span>01</span>Registration</button>
-            <button type="button" role="tab" id="lab-tab-1" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>02</span>Completion</button>
-            <button type="button" role="tab" id="lab-tab-2" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>03</span>LiDAR / SLAM</button>
-            <button type="button" role="tab" id="lab-tab-3" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>04</span>YOLO</button>
-            <button type="button" role="tab" id="lab-tab-4" aria-controls="lab-panel" aria-selected="false" tabindex="-1"><span>05</span>Inspection</button>
-          </div>
-          <div class="engineering-body" id="lab-panel" role="tabpanel" aria-labelledby="lab-tab-0" tabindex="0">
-            <div class="engineering-stage">
-              <div class="engineering-stage-top"><span data-lab-medium>CONCEPT DEMO</span></div>
-              <canvas class="engineering-canvas" role="img" aria-label="Animated engineering concept demonstration">Interactive illustrations of point cloud registration, completion, mapping, detection, and inspection.</canvas>
-              <div class="engineering-legend" data-lab-legend></div>
-            </div>
-            <div class="engineering-detail">
-              <p class="lab-eyebrow" data-lab-tag>01 / Geometry</p>
-              <h3 data-lab-title>Point Cloud Registration</h3>
-              <p data-lab-text>Explore point cloud registration, completion, LiDAR mapping, object detection, and industrial inspection.</p>
-              <ol data-lab-steps></ol>
-              <p class="photo-credit" data-photo-credit hidden></p>
-              <a data-lab-link href="resume_en.pdf">Explore my engineering background</a>
-            </div>
-          </div>
-          <div class="engineering-controls">
-            <button type="button" data-lab-play aria-pressed="true">Pause</button>
-            <input type="range" min="0" max="1000" value="0" aria-label="Animation progress" data-lab-progress>
-            <output data-lab-percent>0%</output>
-          </div>
-        </div>
-        <noscript><p>Enable JavaScript to play these studies. See my <a href="resume_en.pdf">CV</a> for research and project details.</p></noscript>
       </section>
 
       <section class="section two-column" id="contact" aria-labelledby="contact-title">

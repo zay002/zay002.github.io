@@ -56,6 +56,9 @@ output/
 # Keep compressed poster images in Git, source PNGs local.
 assets/poster/*.PNG
 
+# Original robotics recordings remain local; publish only web derivatives.
+/assets/videos/*.mp4
+
 # =========================
 # Local / experimental projects
 # =========================
